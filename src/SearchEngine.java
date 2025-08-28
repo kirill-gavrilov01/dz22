@@ -1,33 +1,31 @@
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+// Класс SearchEngine обеспечивает возможность поиска по объектам
 public class SearchEngine {
-    private final List<Searchable> searchables;
+    private final List<Searchable> items;
 
-    public SearchEngine(List<Searchable> searchables) {
-        this.searchables = searchables;
+    public SearchEngine(List<Searchable> items) {
+        this.items = items;
     }
 
-    /**
-     * Метод ищет объекты по определенному критерию и возвращает отсортированную мапу,
-     * где ключ — имя объекта, а значение — сам объект.
-     */
+    // Метод поиска объектов, удовлетворяющих предикату
     public Map<String, Searchable> search(SearchPredicate predicate) {
         TreeMap<String, Searchable> results = new TreeMap<>();
 
-        for (Searchable item : searchables) {
-            if (predicate.test(item)) { // Проверяем условие фильтрации
-                results.put(item.getName(), item); // Добавляем найденный объект в мапу
+        for (Searchable item : items) {
+            if (predicate.test(item)) {
+                results.put(item.getName(), item);
             }
         }
         return results;
     }
-}
 
-@FunctionalInterface
-interface SearchPredicate {
-    boolean test(Searchable s);
+    // Функциональный интерфейс для условий поиска
+    @FunctionalInterface
+    public interface SearchPredicate {
+        boolean test(Searchable s);
+    }
 }
